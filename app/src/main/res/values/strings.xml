@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Workers Portal</string>
+    
+    <!-- Splash Screen-->
+    <string name="app_logo_text">propals</string>
+    <string name="app_tagline">Your Perfect Hiring Partner</string>
+    <string name="app_description">Effortlessly bring the best skilled workers to your doorstep.</string>
 </resources>

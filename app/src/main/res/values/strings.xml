@@ -5,4 +5,17 @@
     <string name="app_logo_text">propals</string>
     <string name="app_tagline">Your Perfect Hiring Partner</string>
     <string name="app_description">Effortlessly bring the best skilled workers to your doorstep.</string>
+
+    <!-- Login Screen-->
+    <string name="login_screen_banner">Login screen banner</string>
+    <string name="login_screen_head">Kerala\'s #1 Workers Hiring and Posting App</string>
+    <string name="login_or_signup">Log in or Sign up</string>
+    <string name="continue_str">Continue</string>
+    <string name="enter_phone_number">Enter Phone Number</string>
+    <string name="or">or</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="by_continuing_you_agree">By continuing, you agree to our</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="content_policy">Content Policy</string>
 </resources>

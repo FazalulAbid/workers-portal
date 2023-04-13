@@ -9,12 +9,12 @@ import androidx.compose.ui.unit.sp
 import com.fifty.workersportal.R
 
 val appFontFamily = FontFamily(
-    Font(R.font.roboto_regular, FontWeight.Normal),
-    Font(R.font.roboto_medium, FontWeight.Medium),
-    Font(R.font.roboto_regular, FontWeight.SemiBold),
-    Font(R.font.roboto_bold, FontWeight.Bold),
-    Font(R.font.roboto_bold, FontWeight.ExtraBold),
-    Font(R.font.roboto_black, FontWeight.Black),
+    Font(R.font.circular_std_book, FontWeight.Normal),
+    Font(R.font.circular_std_medium, FontWeight.Medium),
+    Font(R.font.circular_std_medium, FontWeight.SemiBold),
+    Font(R.font.circular_std_bold, FontWeight.Bold),
+    Font(R.font.circular_std_black, FontWeight.ExtraBold),
+    Font(R.font.circular_std_black, FontWeight.Black),
 )
 
 // Set of Material typography styles to start with
@@ -52,7 +52,7 @@ val Typography = Typography(
     ),
     h6 = TextStyle(
         fontFamily = appFontFamily,
-        fontSize = 20.sp
+        fontSize = 22.sp
     ),
 
     // Subtitles

@@ -27,7 +27,7 @@ fun SplashScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(screenPadding),
+                .padding(ScreenPadding),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

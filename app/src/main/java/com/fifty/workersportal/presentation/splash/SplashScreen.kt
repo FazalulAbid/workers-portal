@@ -7,6 +7,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,11 +16,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.fifty.workersportal.R
+import com.fifty.workersportal.presentation.Screen
 import com.fifty.workersportal.presentation.ui.theme.*
+import com.fifty.workersportal.util.Constants
+import com.fifty.workersportal.util.Constants.SPLASH_SCREEN_DURATION
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(
+    navController: NavController
+) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.background
@@ -31,6 +41,18 @@ fun SplashScreen() {
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            LaunchedEffect(key1 = true) {
+                withContext(Dispatchers.Main) {
+                    delay(SPLASH_SCREEN_DURATION)
+                    navController.navigate(Screen.LoginScreen.route) {
+                        popUpTo(Screen.SplashScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            }
+
             // For arranging space between.
             Text(text = "")
             // App icon or name.

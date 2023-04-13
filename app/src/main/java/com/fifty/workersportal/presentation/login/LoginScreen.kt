@@ -19,7 +19,6 @@ import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.node.modifierElementOf
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,14 +28,18 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.fifty.workersportal.R
+import com.fifty.workersportal.presentation.Screen
 import com.fifty.workersportal.presentation.common.FullWidthRoundedButton
 import com.fifty.workersportal.presentation.ui.theme.*
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    navController: NavController
+) {
 
     val coroutineScope = rememberCoroutineScope()
     val focusManger = LocalFocusManager.current
@@ -174,7 +177,10 @@ fun LoginScreen() {
                             contentColor = Color.White,
                             backgroundColor = PrimaryColor
                         ) {
+                            // Send otp to mobile number.
+                            navController.navigate(Screen.PhoneOtpScreen.route) {
 
+                            }
                         }
                     }
                     // Or.

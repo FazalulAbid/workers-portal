@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import com.fifty.workersportal.Navigation
 import com.fifty.workersportal.presentation.login.LoginScreen
 import com.fifty.workersportal.presentation.splash.SplashScreen
 import com.fifty.workersportal.presentation.ui.theme.WorkersPortalTheme
@@ -29,7 +30,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    LoginScreen()
+                    Navigation()
                 }
             }
         }

@@ -19,3 +19,5 @@ val TopBarHeight = 56.dp
 const val OtpViewTypeNone = 0
 const val OtpViewTypeUnderLine = 1
 const val OtpViewTypeBorder = 2
+
+// Animation values

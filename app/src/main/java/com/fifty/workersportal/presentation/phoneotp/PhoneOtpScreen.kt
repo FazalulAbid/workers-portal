@@ -29,7 +29,7 @@ fun PhoneOtpScreen(navController: NavController) {
 
     var otp by remember { mutableStateOf("") }
 
-    Column {
+    Column(modifier = Modifier.background(MaterialTheme.colors.background)) {
         CommonTopBar(backButtonNeeded = true, stringResource(id = R.string.otp_verification)) {
             navController.navigateUp()
         }

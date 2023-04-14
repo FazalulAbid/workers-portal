@@ -18,7 +18,7 @@ fun Navigation() {
     val navController = rememberAnimatedNavController()
     AnimatedNavHost(
         navController = navController,
-        startDestination = Screen.SplashScreen.route
+        startDestination = Screen.PhoneOtpScreen.route
     ) {
 
         // Splash screen destination.

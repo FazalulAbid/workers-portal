@@ -52,7 +52,7 @@ val Typography = Typography(
     ),
     h6 = TextStyle(
         fontFamily = appFontFamily,
-        fontSize = 22.sp
+        fontSize = 20.sp
     ),
 
     // Subtitles

@@ -61,6 +61,8 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
 
+    // core splash screen
+    implementation("androidx.core:core-splashscreen:1.0.0")
     // Accompanist UI Controller
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.0"
     // Accompanist Navigation Animation
@@ -70,7 +72,7 @@ dependencies {
     def nav_version = "2.6.0-alpha09"
     implementation "androidx.navigation:navigation-compose:$nav_version"
     // Android Compose Animation
-    def compose_animation_version = "1.1.1"
-    implementation "androidx.compose.animation:animation:1.0.5"
+    def compose_animation_version = "1.5.0-alpha02"
+    implementation "androidx.compose.animation:animation:$compose_animation_version"
 
 }

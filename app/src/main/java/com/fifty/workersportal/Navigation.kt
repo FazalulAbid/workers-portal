@@ -43,20 +43,8 @@ fun Navigation() {
     val navController = rememberAnimatedNavController()
     AnimatedNavHost(
         navController = navController,
-        startDestination = Screen.SplashScreen.route
+        startDestination = Screen.LoginScreen.route
     ) {
-
-        // Splash screen destination.
-        composable(
-            route = Screen.SplashScreen.route,
-            enterTransition = { enterTransition },
-            exitTransition = { exitTransition },
-            popEnterTransition = { popEnterTransition },
-            popExitTransition = { popExitTransition }
-        ) {
-            SplashScreen(navController = navController)
-        }
-
         // Login Screen destination.
         composable(
             route = Screen.LoginScreen.route,

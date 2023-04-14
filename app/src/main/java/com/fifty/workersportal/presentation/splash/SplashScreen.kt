@@ -42,16 +42,16 @@ fun SplashScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            LaunchedEffect(key1 = true) {
-                withContext(Dispatchers.Main) {
-                    delay(SPLASH_SCREEN_DURATION)
-                    navController.navigate(Screen.LoginScreen.route) {
-                        popUpTo(Screen.SplashScreen.route) {
-                            inclusive = true
-                        }
-                    }
-                }
-            }
+//            LaunchedEffect(key1 = true) {
+//                withContext(Dispatchers.Main) {
+//                    delay(SPLASH_SCREEN_DURATION)
+//                    navController.navigate(Screen.LoginScreen.route) {
+//                        popUpTo(Screen.SplashScreen.route) {
+//                            inclusive = true
+//                        }
+//                    }
+//                }
+//            }
 
             // For arranging space between.
             Text(text = "")

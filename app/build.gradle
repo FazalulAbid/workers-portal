@@ -82,11 +82,19 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:2.44"
     kapt "androidx.hilt:hilt-compiler:1.0.0"
 
+    // Datastore
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
-    // core splash screen
+    //OkHttp
+    def okhttp_version = "4.10.0"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+    // Core splash screen
     implementation "androidx.core:core-splashscreen:1.0.0"
 
     // Accompanist UI Controller

@@ -23,7 +23,9 @@ import com.fifty.workersportal.presentation.login.LoginScreen
 import com.fifty.workersportal.presentation.splash.SplashScreen
 import com.fifty.workersportal.presentation.splash.SplashScreenViewModel
 import com.fifty.workersportal.presentation.ui.theme.WorkersPortalTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val splashScreenViewModel: SplashScreenViewModel by viewModels()

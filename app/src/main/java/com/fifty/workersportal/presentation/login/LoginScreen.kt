@@ -2,6 +2,7 @@ package com.fifty.workersportal.presentation.login
 
 import android.inputmethodservice.Keyboard
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.relocation.BringIntoViewRequester
@@ -19,6 +20,7 @@ import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -28,19 +30,26 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.fifty.workersportal.R
+import com.fifty.workersportal.data.model.Auth
 import com.fifty.workersportal.presentation.Screen
 import com.fifty.workersportal.presentation.common.FullWidthRoundedButton
 import com.fifty.workersportal.presentation.ui.theme.*
+import com.fifty.workersportal.presentation.viewmodel.AuthViewModel
+import com.fifty.workersportal.presentation.viewmodel.CoroutinesErrorHandler
+import com.fifty.workersportal.presentation.viewmodel.TokenViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LoginScreen(
-    navController: NavController
+    navController: NavController,
+    authViewModel: AuthViewModel = hiltViewModel(),
+    tokenViewModel: TokenViewModel = hiltViewModel()
 ) {
-
+    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val focusManger = LocalFocusManager.current
     val bringIntoViewRequester = BringIntoViewRequester()
@@ -116,20 +125,18 @@ fun LoginScreen(
                                 // Mobile number
                                 var mobileNumberTextState by remember { mutableStateOf("") }
                                 val maxChar = 10
-                                TextField(
-                                    modifier = Modifier
-                                        .fillMaxHeight()
-                                        .onFocusEvent { event ->
-                                            if (event.isFocused) {
-                                                coroutineScope.launch {
-                                                    bringIntoViewRequester.bringIntoView()
-                                                }
+                                TextField(modifier = Modifier
+                                    .fillMaxHeight()
+                                    .onFocusEvent { event ->
+                                        if (event.isFocused) {
+                                            coroutineScope.launch {
+                                                bringIntoViewRequester.bringIntoView()
                                             }
-                                        },
+                                        }
+                                    },
                                     value = mobileNumberTextState,
                                     onValueChange = {
-                                        if (it.length <= maxChar)
-                                            mobileNumberTextState = it
+                                        if (it.length <= maxChar) mobileNumberTextState = it
                                     },
                                     placeholder = {
                                         Text(
@@ -156,10 +163,7 @@ fun LoginScreen(
                                         keyboardType = KeyboardType.Number,
                                         imeAction = ImeAction.Done
                                     ),
-                                    keyboardActions = KeyboardActions(
-                                        onDone = { focusManger.clearFocus() }
-                                    )
-                                )
+                                    keyboardActions = KeyboardActions(onDone = { focusManger.clearFocus() }))
                             }
                         }
                     }
@@ -177,10 +181,17 @@ fun LoginScreen(
                             contentColor = Color.White,
                             backgroundColor = PrimaryColor
                         ) {
+                            val auth =
+                                Auth(countryCode = "+91", otp = "", phoneNumber = "9562520502")
+                            authViewModel.login(auth, object : CoroutinesErrorHandler {
+                                override fun onError(message: String) {
+                                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                                }
+                            })
                             // Send otp to mobile number.
-                            navController.navigate(Screen.PhoneOtpScreen.route) {
-
-                            }
+//                            navController.navigate(Screen.PhoneOtpScreen.route) {
+//
+//                            }
                         }
                     }
                     // Or.
@@ -197,8 +208,7 @@ fun LoginScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         IconButton(
-                            onClick = {},
-                            modifier = Modifier.fillMaxSize()
+                            onClick = {}, modifier = Modifier.fillMaxSize()
                         ) {
                             Image(
                                 modifier = Modifier.height(30.dp),
@@ -239,14 +249,12 @@ fun LoginScreen(
 fun TextBetweenLines(text: String, modifier: Modifier) {
     // Login and Signup text.
     Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
+        modifier = modifier, contentAlignment = Alignment.Center
     ) {
         Divider(
             modifier = Modifier
                 .height(2.dp)
-                .fillMaxWidth(),
-            color = LightColor
+                .fillMaxWidth(), color = LightColor
         )
         Box(
             modifier = Modifier
@@ -254,8 +262,7 @@ fun TextBetweenLines(text: String, modifier: Modifier) {
                 .padding(horizontal = 8.dp)
         ) {
             Text(
-                modifier = Modifier
-                    .padding(SmallTextPadding),
+                modifier = Modifier.padding(SmallTextPadding),
                 text = text,
                 textAlign = TextAlign.Center,
                 color = DarkTextColor,

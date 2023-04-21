@@ -81,14 +81,4 @@ object SingletonModule {
         retrofit.client(okHttpClient)
             .build()
             .create(ApiService::class.java)
-
-    @Singleton
-    @Provides
-    fun provideRestCountryService(): RestCountriesApiService {
-        return Retrofit.Builder()
-            .baseUrl(Constants.REST_COUNTRIES_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(RestCountriesApiService::class.java)
-    }
 }

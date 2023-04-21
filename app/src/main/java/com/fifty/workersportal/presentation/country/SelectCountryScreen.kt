@@ -26,57 +26,67 @@ fun SelectCountryScreen(
 
     val searchText by countryViewModel.searchText.collectAsState()
     val countries by countryViewModel.countries.collectAsState()
-    val isSearching by countryViewModel.isSearching.collectAsState()
+    val countryListState = countryViewModel.countryListState.value
 
     Surface {
-        Column {
-            // Top bar
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = ScreenPaddingValue)
-                    .height(60.dp)
-                    .fillMaxWidth()
-                    .background(Color.Red),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // Back button
-                IconButton(onClick = {
+        Box {
+            Column {
+                // Top bar
+                Row(
+                    modifier = Modifier
+                        .padding(horizontal = ScreenPaddingValue)
+                        .height(60.dp)
+                        .fillMaxWidth()
+                        .background(Color.Red),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // Back button
+                    IconButton(onClick = {
 
-                }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_back_arrow),
-                        contentDescription = "Select country back button"
-                    )
-                }
-                // Select country head text
-                Text(
-                    text = "Select Country",
-                    style = MaterialTheme.typography.subtitle1
-                )
-            }
-
-            // Search bar.
-            TextField(
-                value = searchText, onValueChange = countryViewModel::onSearchTextChange,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                placeholder = { Text(text = "Search by country name...") }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            LazyColumn(modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)) {
-                items(countries) { country ->
+                    }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_back_arrow),
+                            contentDescription = "Select country back button"
+                        )
+                    }
+                    // Select country head text
                     Text(
-                        text = "${country.name} ${country.alpha2Code} ${country.phoneCode}",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 16.dp)
+                        text = "Select Country",
+                        style = MaterialTheme.typography.subtitle1
                     )
+                }
+
+                // Search bar.
+                TextField(
+                    value = searchText, onValueChange = countryViewModel::onSearchTextChange,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    placeholder = { Text(text = "Search by country name...") }
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Countries list.
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                ) {
+                    items(countries) { country ->
+                        Text(
+                            text = "${country.name} ${country.alpha2Code} ${country.callingCode}",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 16.dp)
+                        )
+                    }
                 }
             }
 
+            // Circular progress indicator.
+            if (countryListState.isLoading) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
         }
     }
 }

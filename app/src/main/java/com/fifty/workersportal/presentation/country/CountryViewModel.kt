@@ -1,9 +1,14 @@
 package com.fifty.workersportal.presentation.country
 
+import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fifty.workersportal.domain.model.Country
 import com.fifty.workersportal.domain.repository.CountryRepository
+import com.fifty.workersportal.domain.usecase.GetCountriesUseCase
+import com.fifty.workersportal.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
@@ -12,25 +17,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CountryViewModel @Inject constructor(
-    private val countryRepository: CountryRepository
+    private val getCountriesUseCase: GetCountriesUseCase
 ) : ViewModel() {
+
+    private val _countryListState = mutableStateOf<CountryListState>(CountryListState())
+    val countryListState: State<CountryListState> = _countryListState
 
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()
 
-    private val _isSearching = MutableStateFlow(false)
-    val isSearching = _isSearching.asStateFlow()
+    private val _countries = MutableStateFlow(listOf<Country>())
 
-    private val allCountries = listOf<Country>(
-        Country("Abid", "", "", ""),
-        Country("Fazal", "", "", ""),
-        Country("Fasil", "", "", ""),
-        Country("Nithin", "", "", ""),
-        Country("Jobin", "", "", ""),
-        Country("Aboobacker", "", "", ""),
-    )
-
-    private val _countries = MutableStateFlow(allCountries)
     @OptIn(FlowPreview::class)
     val countries = searchText
         .debounce(100L)
@@ -49,13 +46,31 @@ class CountryViewModel @Inject constructor(
             _countries.value
         )
 
+    init {
+        getCountries()
+    }
+
     fun onSearchTextChange(text: String) {
         _searchText.value = text
     }
 
-    fun getCountries() {
-        viewModelScope.launch {
-            _countries.value = countryRepository.getCountries()
-        }
+    private fun getCountries() {
+        getCountriesUseCase().onEach { result ->
+            when (result) {
+                is Resource.Loading -> {
+                    _countryListState.value = CountryListState(isLoading = true)
+                }
+                is Resource.Error -> {
+                    _countryListState.value = CountryListState(
+                        error = result.message ?: "An unexpected error occurred"
+                    )
+                }
+                is Resource.Success -> {
+                    _countryListState.value =
+                        CountryListState(countries = result.data ?: emptyList())
+                    _countries.value = _countryListState.value.countries
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 }

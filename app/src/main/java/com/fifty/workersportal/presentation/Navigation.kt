@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.fifty.workersportal.presentation.Screen
+import com.fifty.workersportal.presentation.country.SelectCountryScreen
 import com.fifty.workersportal.presentation.login.LoginScreen
 import com.fifty.workersportal.presentation.phoneotp.PhoneOtpScreen
 import com.fifty.workersportal.presentation.splash.SplashScreen
@@ -43,8 +44,9 @@ fun Navigation() {
     val navController = rememberAnimatedNavController()
     AnimatedNavHost(
         navController = navController,
-        startDestination = Screen.LoginScreen.route
+        startDestination = Screen.SelectCountryScreen.route
     ) {
+
         // Login Screen destination.
         composable(
             route = Screen.LoginScreen.route,
@@ -65,6 +67,13 @@ fun Navigation() {
             popExitTransition = { popExitTransition }
         ) {
             PhoneOtpScreen(navController = navController)
+        }
+
+        // Select Country Screen.
+        composable(
+            route = Screen.SelectCountryScreen.route
+        ) {
+            SelectCountryScreen(navController = navController)
         }
     }
 }

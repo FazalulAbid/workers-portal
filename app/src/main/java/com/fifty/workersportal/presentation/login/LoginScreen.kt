@@ -4,6 +4,7 @@ import android.inputmethodservice.Keyboard
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
@@ -101,7 +102,44 @@ fun LoginScreen(
                                 .height(56.dp)
                                 .weight(0.25f)
                                 .border(1.5.dp, LightColor, RoundedCornerShape(16.dp))
+                                .clickable(
+                                    indication = null,
+                                    interactionSource = remember {
+                                        MutableInteractionSource()
+                                    }
+                                ) {
+                                    navController.navigate(Screen.SelectCountryScreen.route)
+                                },
+                            contentAlignment = Alignment.Center,
                         ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                // Country flag
+                                Image(
+                                    modifier = Modifier
+                                        .width(36.dp)
+                                        .height(24.dp)
+                                        .clip(shape = RoundedCornerShape(4.dp)),
+                                    painter = painterResource(
+                                        id =
+                                        R.drawable.ic_launcher_background
+                                    ),
+                                    contentDescription = "Country flag",
+                                    contentScale = ContentScale.Crop
+                                )
+
+                                // Down arrow
+                                Icon(
+                                    modifier = Modifier
+                                        .size(24.dp)
+                                        .padding(0.dp),
+                                    painter = painterResource(
+                                        id =
+                                        R.drawable.ic_round_arrow_drop_down
+                                    ),
+                                    contentDescription = "Country selection down arrow",
+                                    tint = Color.Gray,
+                                )
+                            }
 
                         }
                         Box(
@@ -125,15 +163,16 @@ fun LoginScreen(
                                 // Mobile number
                                 var mobileNumberTextState by remember { mutableStateOf("") }
                                 val maxChar = 10
-                                TextField(modifier = Modifier
-                                    .fillMaxHeight()
-                                    .onFocusEvent { event ->
-                                        if (event.isFocused) {
-                                            coroutineScope.launch {
-                                                bringIntoViewRequester.bringIntoView()
+                                TextField(
+                                    modifier = Modifier
+                                        .fillMaxHeight()
+                                        .onFocusEvent { event ->
+                                            if (event.isFocused) {
+                                                coroutineScope.launch {
+                                                    bringIntoViewRequester.bringIntoView()
+                                                }
                                             }
-                                        }
-                                    },
+                                        },
                                     value = mobileNumberTextState,
                                     onValueChange = {
                                         if (it.length <= maxChar) mobileNumberTextState = it
@@ -163,7 +202,8 @@ fun LoginScreen(
                                         keyboardType = KeyboardType.Number,
                                         imeAction = ImeAction.Done
                                     ),
-                                    keyboardActions = KeyboardActions(onDone = { focusManger.clearFocus() }))
+                                    keyboardActions = KeyboardActions(onDone = { focusManger.clearFocus() })
+                                )
                             }
                         }
                     }

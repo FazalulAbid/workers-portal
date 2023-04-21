@@ -10,10 +10,12 @@ import androidx.datastore.preferences.core.Preferences
 import com.fifty.workersportal.data.model.Auth
 import com.fifty.workersportal.data.remote.ApiService
 import com.fifty.workersportal.data.remote.AuthApiService
+import com.fifty.workersportal.data.remote.RestCountriesApiService
 import com.fifty.workersportal.util.AuthAuthenticator
 import com.fifty.workersportal.util.AuthInterceptor
 import com.fifty.workersportal.util.Constants
 import com.fifty.workersportal.util.TokenManager
+import com.google.gson.Gson
 import dagger.Provides
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
@@ -79,4 +81,14 @@ object SingletonModule {
         retrofit.client(okHttpClient)
             .build()
             .create(ApiService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideRestCountryService(): RestCountriesApiService {
+        return Retrofit.Builder()
+            .baseUrl(Constants.REST_COUNTRIES_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(RestCountriesApiService::class.java)
+    }
 }

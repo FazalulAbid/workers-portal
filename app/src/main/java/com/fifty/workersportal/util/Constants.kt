@@ -37,4 +37,5 @@ fun <T> apiRequestFlow(call: suspend () -> Response<T>): Flow<ApiResponse<T>> = 
 object Constants {
     const val SPLASH_SCREEN_DURATION = 7000L
     const val WORKERS_PORTAL_BASE_URL = "https://fazilnbr.online/"
+    const val REST_COUNTRIES_BASE_URL = "https://restcountries.com/v2/"
 }

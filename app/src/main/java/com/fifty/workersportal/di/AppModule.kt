@@ -2,10 +2,14 @@ package com.fifty.workersportal.di
 
 import com.fifty.workersportal.data.remote.ApiService
 import com.fifty.workersportal.data.remote.AuthApiService
+import com.fifty.workersportal.data.remote.RestCountriesApiService
 import com.fifty.workersportal.data.repository.AuthRepositoryImpl
+import com.fifty.workersportal.data.repository.CountryRepositoryImpl
 import com.fifty.workersportal.data.repository.UserRepositoryImpl
 import com.fifty.workersportal.domain.repository.AuthRepository
+import com.fifty.workersportal.domain.repository.CountryRepository
 import com.fifty.workersportal.domain.repository.UserRepository
+import com.fifty.workersportal.presentation.country.CountryViewModel
 import com.fifty.workersportal.presentation.viewmodel.AuthViewModel
 import com.fifty.workersportal.presentation.viewmodel.TokenViewModel
 import com.fifty.workersportal.presentation.viewmodel.UserViewModel
@@ -38,4 +42,12 @@ object AppModule {
     @Provides
     fun provideUserViewModel(userRepository: UserRepository): UserViewModel =
         UserViewModel(userRepository)
+
+    @Provides
+    fun provideCountryRepository(restCountriesApiService: RestCountriesApiService): CountryRepository =
+        CountryRepositoryImpl(restCountriesApiService)
+
+    @Provides
+    fun provideCountryViewModel(countryRepository: CountryRepository) =
+        CountryViewModel(countryRepository)
 }

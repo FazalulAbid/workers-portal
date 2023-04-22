@@ -13,6 +13,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,14 +34,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.fifty.workersportal.R
 import com.fifty.workersportal.data.model.Auth
+import com.fifty.workersportal.domain.model.Country
 import com.fifty.workersportal.presentation.Screen
 import com.fifty.workersportal.presentation.common.FullWidthRoundedButton
 import com.fifty.workersportal.presentation.ui.theme.*
 import com.fifty.workersportal.presentation.viewmodel.AuthViewModel
 import com.fifty.workersportal.presentation.viewmodel.CoroutinesErrorHandler
 import com.fifty.workersportal.presentation.viewmodel.TokenViewModel
+import com.fifty.workersportal.util.Constants
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -54,6 +58,20 @@ fun LoginScreen(
     val coroutineScope = rememberCoroutineScope()
     val focusManger = LocalFocusManager.current
     val bringIntoViewRequester = BringIntoViewRequester()
+
+    val countryCodeResult = navController.currentBackStackEntry
+        ?.savedStateHandle
+        ?.getLiveData<String>("country_code")?.observeAsState(Constants.DEFAULT_COUNTRY_CODE)
+
+    val countryFlagResult = navController.currentBackStackEntry
+        ?.savedStateHandle
+        ?.getLiveData<String>("country_flag_url")
+        ?.observeAsState(Constants.DEFAULT_COUNTRY_FLAG_URL)
+
+    val countryNameResult = navController.currentBackStackEntry
+        ?.savedStateHandle
+        ?.getLiveData<String>("country_name")?.observeAsState(Constants.DEFAULT_COUNTRY_NAME)
+
 
     Surface(color = MaterialTheme.colors.background) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -119,9 +137,11 @@ fun LoginScreen(
                                         .width(36.dp)
                                         .height(24.dp)
                                         .clip(shape = RoundedCornerShape(4.dp)),
-                                    painter = painterResource(
-                                        id =
-                                        R.drawable.ic_launcher_background
+                                    painter = rememberImagePainter(data = countryFlagResult?.value,
+                                        builder = {
+                                            placeholder(R.drawable.fixitnow_logo)
+                                            crossfade(true)
+                                        }
                                     ),
                                     contentDescription = "Country flag",
                                     contentScale = ContentScale.Crop

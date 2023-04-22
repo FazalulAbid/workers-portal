@@ -24,4 +24,7 @@
     <string name="otp_verification">OTP Verification</string>
     <string name="we_have_sent_a_verification_code_to">We have sent a verification code to</string>
     <string name="title_activity_country_result">CountryResultActivity</string>
+
+    <!-- Select Country Code Screen-->
+    <string name="search_by_country_name">Search by country name…</string>
 </resources>

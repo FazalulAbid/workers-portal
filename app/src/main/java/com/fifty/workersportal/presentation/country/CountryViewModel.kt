@@ -20,7 +20,7 @@ class CountryViewModel @Inject constructor(
     private val getCountriesUseCase: GetCountriesUseCase
 ) : ViewModel() {
 
-    private val _countryListState = mutableStateOf<CountryListState>(CountryListState())
+    private val _countryListState = mutableStateOf(CountryListState())
     val countryListState: State<CountryListState> = _countryListState
 
     private val _searchText = MutableStateFlow("")

@@ -44,7 +44,7 @@ fun Navigation() {
     val navController = rememberAnimatedNavController()
     AnimatedNavHost(
         navController = navController,
-        startDestination = Screen.SelectCountryScreen.route
+        startDestination = Screen.LoginScreen.route
     ) {
 
         // Login Screen destination.

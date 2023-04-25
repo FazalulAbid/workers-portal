@@ -1,10 +1,10 @@
 package com.fifty.workersportal.di
 
 import com.fifty.workersportal.data.remote.RestCountriesApiService
-import com.fifty.workersportal.data.repository.CountryRepositoryImpl
-import com.fifty.workersportal.domain.repository.CountryRepository
-import com.fifty.workersportal.domain.usecase.GetCountriesUseCase
-import com.fifty.workersportal.presentation.country.CountryViewModel
+import com.fifty.workersportal.data.repository.countrycode.CountryCodeRepositoryImpl
+import com.fifty.workersportal.domain.repository.CountryCodeRepository
+import com.fifty.workersportal.domain.usecase.countrycode.GetCountriesUseCase
+import com.fifty.workersportal.presentation.countrycode.CountryViewModel
 import com.fifty.workersportal.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -30,12 +30,12 @@ object CountryCodeModule {
 
     @Singleton
     @Provides
-    fun provideCountryRepository(restCountriesApiService: RestCountriesApiService): CountryRepository =
-        CountryRepositoryImpl(restCountriesApiService)
+    fun provideCountryRepository(restCountriesApiService: RestCountriesApiService): CountryCodeRepository =
+        CountryCodeRepositoryImpl(restCountriesApiService)
 
     @Singleton
     @Provides
-    fun provideGetCountriesUseCase(countryRepository: CountryRepository): GetCountriesUseCase =
+    fun provideGetCountriesUseCase(countryRepository: CountryCodeRepository): GetCountriesUseCase =
         GetCountriesUseCase(countryRepository)
 
 

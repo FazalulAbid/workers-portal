@@ -1,4 +1,4 @@
-package com.fifty.workersportal.data.remote.dto.country
+package com.fifty.workersportal.data.remote.dto.countrycode
 
 data class Flags(
     val png: String,

@@ -1,6 +1,5 @@
-package com.fifty.workersportal.presentation.country
+package com.fifty.workersportal.presentation.countrycode
 
-import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -12,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -22,7 +20,6 @@ import com.fifty.workersportal.domain.model.Country
 import com.fifty.workersportal.presentation.common.HorizontalDivider
 import com.fifty.workersportal.presentation.ui.theme.DarkTextColor
 import com.fifty.workersportal.presentation.ui.theme.LightColor
-import com.fifty.workersportal.presentation.ui.theme.LightTextColor
 import com.fifty.workersportal.presentation.ui.theme.ScreenPaddingValue
 
 @Composable
@@ -57,6 +54,7 @@ fun CountryCodeListItem(
                     painter = rememberImagePainter(
                         data = country.flagUrl,
                         builder = {
+                            size(40)
                             placeholder(R.drawable.fixitnow_logo)
                             crossfade(true)
                         }

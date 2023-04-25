@@ -1,8 +1,6 @@
 package com.fifty.workersportal.domain.model
 
-import com.fifty.workersportal.data.remote.dto.country.CountryDto
-import com.fifty.workersportal.data.remote.dto.country.Flags
-import com.google.gson.annotations.SerializedName
+import com.fifty.workersportal.data.remote.dto.countrycode.CountryDto
 
 data class Country(
     val alpha2Code: String,

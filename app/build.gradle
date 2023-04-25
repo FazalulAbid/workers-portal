@@ -63,6 +63,10 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
 
+//    // Material 3
+//    def material3_version = "1.1.0-beta02"
+//    implementation "androidx.compose.material3:material3:$material3_version"
+
     def lifecycle_version = "2.6.1"
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"

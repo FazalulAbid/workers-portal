@@ -1,7 +1,8 @@
 package com.fifty.workersportal.data.remote
 
-import com.fifty.workersportal.data.model.Auth
+import com.fifty.workersportal.data.model.AuthRequest
 import com.fifty.workersportal.data.model.LoginResponse
+import com.fifty.workersportal.data.model.OtpResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -12,12 +13,12 @@ interface AuthApiService {
 
     @POST("user/sent-otp")
     suspend fun sendOtpToPhone(
-        @Body auth: Auth
-    ): Response<LoginResponse>
+        @Body auth: AuthRequest
+    ): Response<OtpResponse>
 
     @POST("user/signup-and-login")
     suspend fun signupAndLogin(
-        @Body auth: Auth
+        @Body auth: AuthRequest
     ): Response<LoginResponse>
 
     @GET("refresh-token")

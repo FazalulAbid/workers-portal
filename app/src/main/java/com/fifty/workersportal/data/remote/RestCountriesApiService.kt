@@ -1,7 +1,6 @@
 package com.fifty.workersportal.data.remote
 
-import com.fifty.workersportal.data.remote.dto.country.CountryDto
-import com.fifty.workersportal.domain.model.Country
+import com.fifty.workersportal.data.remote.dto.countrycode.CountryDto
 import retrofit2.http.GET
 
 interface RestCountriesApiService {

@@ -6,10 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.fifty.workersportal.presentation.Screen
-import com.fifty.workersportal.presentation.country.SelectCountryScreen
+import com.fifty.workersportal.presentation.countrycode.SelectCountryScreen
 import com.fifty.workersportal.presentation.login.LoginScreen
 import com.fifty.workersportal.presentation.phoneotp.PhoneOtpScreen
-import com.fifty.workersportal.presentation.splash.SplashScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController

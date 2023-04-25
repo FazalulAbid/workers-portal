@@ -1,18 +1,15 @@
-package com.fifty.workersportal.presentation.country
+package com.fifty.workersportal.presentation.countrycode
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fifty.workersportal.domain.model.Country
-import com.fifty.workersportal.domain.repository.CountryRepository
-import com.fifty.workersportal.domain.usecase.GetCountriesUseCase
+import com.fifty.workersportal.domain.usecase.countrycode.GetCountriesUseCase
 import com.fifty.workersportal.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel

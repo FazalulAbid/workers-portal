@@ -1,7 +1,5 @@
 package com.fifty.workersportal.presentation.login
 
-import android.inputmethodservice.Keyboard
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -17,9 +15,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.focus.onFocusEvent
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -33,32 +29,33 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.fifty.workersportal.R
-import com.fifty.workersportal.data.model.Auth
-import com.fifty.workersportal.domain.model.Country
 import com.fifty.workersportal.presentation.Screen
 import com.fifty.workersportal.presentation.common.FullWidthRoundedButton
 import com.fifty.workersportal.presentation.ui.theme.*
-import com.fifty.workersportal.presentation.viewmodel.AuthViewModel
-import com.fifty.workersportal.presentation.viewmodel.CoroutinesErrorHandler
-import com.fifty.workersportal.presentation.viewmodel.TokenViewModel
 import com.fifty.workersportal.util.Constants
+import com.fifty.workersportal.util.Resource
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LoginScreen(
     navController: NavController,
-    authViewModel: AuthViewModel = hiltViewModel(),
-    tokenViewModel: TokenViewModel = hiltViewModel()
+    loginScreenViewModel: LoginScreenViewModel = hiltViewModel()
 ) {
+
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val focusManger = LocalFocusManager.current
     val bringIntoViewRequester = BringIntoViewRequester()
 
+    // Phone number verification state.
+    val phoneNumberState = loginScreenViewModel.phoneNumberFormState
+
+    // Country code results.
     val countryCodeResult = navController.currentBackStackEntry
         ?.savedStateHandle
         ?.getLiveData<String>("country_code")?.observeAsState(Constants.DEFAULT_COUNTRY_CODE)
@@ -72,6 +69,36 @@ fun LoginScreen(
         ?.savedStateHandle
         ?.getLiveData<String>("country_name")?.observeAsState(Constants.DEFAULT_COUNTRY_NAME)
 
+    // If form validation success
+    LaunchedEffect(key1 = context) {
+        loginScreenViewModel.phoneNumberValidationEvents.collect { event ->
+            when (event) {
+                LoginScreenViewModel.PhoneNumberValidationEvent.Success -> {
+                    loginScreenViewModel.sendOtpToPhoneNumber(
+                        countryCodeResult!!.value
+                    )
+                    Toast.makeText(context, "Validation Success", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        loginScreenViewModel.otpSendState.observeForever { result ->
+            // Observe otp sent state
+            when (result) {
+                is Resource.Error -> {
+                    Toast.makeText(context, result.data?.error, Toast.LENGTH_SHORT).show()
+                }
+                is Resource.Loading -> {
+                    Toast.makeText(context, "Loading", Toast.LENGTH_SHORT).show()
+                }
+                is Resource.Success -> {
+                    navController.navigate(Screen.PhoneOtpScreen.route)
+                }
+            }
+        }
+    }
 
     Surface(color = MaterialTheme.colors.background) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -176,13 +203,15 @@ fun LoginScreen(
                                 // Country code
                                 Text(
                                     modifier = Modifier.padding(0.dp),
-                                    text = "+91",
+                                    text = "+${
+                                        countryCodeResult?.value
+                                            ?: Constants.DEFAULT_COUNTRY_CODE
+                                    }",
                                     style = MaterialTheme.typography.subtitle1,
                                     fontWeight = FontWeight.SemiBold
                                 )
                                 // Mobile number
-                                var mobileNumberTextState by remember { mutableStateOf("") }
-                                val maxChar = 10
+                                val maxChars = 10
                                 TextField(
                                     modifier = Modifier
                                         .fillMaxHeight()
@@ -193,10 +222,15 @@ fun LoginScreen(
                                                 }
                                             }
                                         },
-                                    value = mobileNumberTextState,
+                                    value = phoneNumberState.phoneNumber,
                                     onValueChange = {
-                                        if (it.length <= maxChar) mobileNumberTextState = it
+                                        if (it.length <= maxChars) {
+                                            loginScreenViewModel.onPhoneNumberValidationEvent(
+                                                PhoneNumberFormEvent.PhoneNumberChanged(it)
+                                            )
+                                        }
                                     },
+                                    isError = phoneNumberState.phoneNumberError != null,
                                     placeholder = {
                                         Text(
                                             text = stringResource(id = R.string.enter_phone_number),
@@ -219,8 +253,9 @@ fun LoginScreen(
                                         fontSize = MaterialTheme.typography.subtitle1.fontSize
                                     ),
                                     keyboardOptions = KeyboardOptions(
-                                        keyboardType = KeyboardType.Number,
-                                        imeAction = ImeAction.Done
+                                        keyboardType = KeyboardType.Phone,
+                                        imeAction = ImeAction.Done,
+                                        autoCorrect = false
                                     ),
                                     keyboardActions = KeyboardActions(onDone = { focusManger.clearFocus() })
                                 )
@@ -241,17 +276,7 @@ fun LoginScreen(
                             contentColor = Color.White,
                             backgroundColor = PrimaryColor
                         ) {
-                            val auth =
-                                Auth(countryCode = "+91", otp = "", phoneNumber = "9562520502")
-                            authViewModel.login(auth, object : CoroutinesErrorHandler {
-                                override fun onError(message: String) {
-                                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-                                }
-                            })
-                            // Send otp to mobile number.
-//                            navController.navigate(Screen.PhoneOtpScreen.route) {
-//
-//                            }
+                            loginScreenViewModel.onPhoneNumberValidationEvent(PhoneNumberFormEvent.Submit)
                         }
                     }
                     // Or.
@@ -302,6 +327,12 @@ fun LoginScreen(
                 }
             }
         }
+    }
+
+    // Show toast for errors
+    if (phoneNumberState.phoneNumberError != null) {
+        Toast.makeText(context, phoneNumberState.phoneNumberError, Toast.LENGTH_SHORT).show()
+        phoneNumberState.phoneNumberError = null
     }
 }
 

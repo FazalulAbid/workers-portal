@@ -1,4 +1,4 @@
-package com.fifty.workersportal.presentation.country
+package com.fifty.workersportal.presentation.countrycode
 
 import com.fifty.workersportal.domain.model.Country
 
